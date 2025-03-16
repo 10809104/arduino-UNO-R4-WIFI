@@ -1,0 +1,16 @@
+in 121, 50
+reservation 121, 50
+
+check
+  plate 90, 10
+  datestr 90, 80
+  timestr 130, 105
+  numberstr 145, 130
+
+checkout
+  plate 90, 10
+  pay 145, 60
+
+remain
+  pay 150, 60
+  balance 150, 95
