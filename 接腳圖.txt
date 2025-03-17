@@ -1,0 +1,21 @@
+e-Paper		Arduino UNO
+VCC		5V	
+GND		GND	
+DIN (MOSI)	D11	
+CLK (SCK)	D13	
+CS		D10	
+DC		D9	
+RST		D8	
+BUSY		D7	
+PWR		D6	
+
+
+RFID		Arduino UNO
+SDA(SS/CS)	D5
+SCK		D13
+MOSI		D11
+MISO		D12
+IRQ		(no use)
+GND		GND
+RST		D4
+3.3V		3.3V

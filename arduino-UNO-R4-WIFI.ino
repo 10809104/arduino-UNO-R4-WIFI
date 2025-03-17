@@ -22,6 +22,8 @@
 #include "secret.h"
 #include "function.h"
 
+#include "Arduino_LED_Matrix.h"   //Include the LED_Matrix library
+
 // 先設定有的沒的
 const char ssid[] = SECRET_SSID;        // your network SSID (name)
 const char pass[] = SECRET_PASS;        // your network password (use for WPA, or use as key for WEP)
@@ -45,6 +47,9 @@ char pub[15];
 WiFiSSLClient wifiClient;
 PubSubClient client(wifiClient);
 
+// Create an instance of the ArduinoLEDMatrix class
+ArduinoLEDMatrix matrix;
+
 // 📶 連接 WiFi
 void setup_wifi() {
     Serial.print(F("🔌 連接 WiFi "));
@@ -58,6 +63,9 @@ void setup_wifi() {
 
 // 🔄 重新連線 MQTT
 void reconnect_mqtt() {
+    // you can also load frames at runtime, without stopping the refresh
+    matrix.loadSequence(LEDMATRIX_ANIMATION);
+    matrix.play(true);
     while (!client.connected()) {
         Serial.print(F("🔗 連接 MQTT..."));
         if (client.connect("ArduinoUNO", mqtt_user, mqtt_password)) {
@@ -83,6 +91,8 @@ void reconnect_mqtt() {
 void setup() {
     DEV_Module_Init();
 
+    matrix.begin();
+    
     // 📡 連接 WiFi
     setup_wifi();
 
@@ -94,7 +104,9 @@ void setup() {
     
     reconnect_mqtt();
 
-    // // 顯示歐美圖示
+    matrix.clear(); // Clear the matrix when connected
+
+    // 顯示歐美圖示
     Serial.print(F("e-Paper Init...\r\n"));
     EPD_2IN66g_Init();
 
@@ -105,6 +117,9 @@ void loop() {
     // 確保 MQTT 連線正常
     if (!client.connected()) {
         reconnect_mqtt();
+    }
+    else {
+        matrix.clear(); // Clear the matrix when connected
     }
     client.loop();
     if (inLoop) {
@@ -118,14 +133,4 @@ void loop() {
             inLoop = false;
         }
     }
-//
-//    // 每 10 秒發送一則訊息
-//    static unsigned long lastMsg = 0;
-//    if (millis() - lastMsg > 10000) {
-//        lastMsg = millis();
-//        const char* message = "🚀 Hello from Arduino UNO R4 WiFi!";
-//        Serial.print("📤 發送訊息: ");
-//        Serial.println(message);
-//        client.publish("screenshot", message);
-//    }
 }
