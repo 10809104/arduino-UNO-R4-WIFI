@@ -71,9 +71,7 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
         pay[sizeof(pay) - 1] = '\0';  // 确保字符串以 null 结尾
         displayImageAndText(plate, NULL, NULL, pay, checkout, 90, 10);  // 显示支付信息和图片
         // mfrc 522的東西
-        SWITCH_SPI_CS(); //spi for rfid
         inLoop = true;
-        SWITCH_SPI_SS(); //spi for e-paper
     } else if (strcmp(topic, "screen/remain") == 0) {
         Serial.println(F("顯示還剩多少錢")); // 有變數
         displayImageAndText(pay, NULL, message, NULL, remain, 150, 60);  // 显示剩余金额和车牌信息
