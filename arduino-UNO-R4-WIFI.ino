@@ -77,11 +77,8 @@ void reconnect_mqtt() {
             
             // 📌 訂閱主題
             client.subscribe(sub_topic);
-            client.subscribe("screen/invalid");
-            client.subscribe("screen/check");
-            client.subscribe("screen/checkout");
             
-            Serial.print(F("📡 已訂閱多個topic "));
+            Serial.print(F("📡 已訂閱有關screen/的topic "));
             Serial.println(sub_topic);
         } else {
             Serial.print(F(" ❌ 連線失敗，錯誤代碼: "));
