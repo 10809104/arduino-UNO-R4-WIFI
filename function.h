@@ -9,7 +9,7 @@
 extern MFRC522 mfrc522;  // Create MFRC522 instance.
 extern PubSubClient client; // PubSubClient 对象的外部声明
 
-extern bool inLoop;         // 是否进入等待循环
+extern bool inRFID;         // 是否进入等待循环
 extern unsigned long preMillis;  // 上次执行时间
 
 bool readRFID();

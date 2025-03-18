@@ -2,8 +2,9 @@
 #include "function.h"
 
 char uid[9]; // rfid卡片的uid
-char plate[8]; // 用来保存收到的消息
-char pay[4]; // 用来保存收到的消息
+char plate[8]; // 用来保存車牌
+char re_plate[8]; // 用来保存預約車牌
+char pay[4]; // 用来保存繳費金額
 
 // 创建临时的 char 数组来存储拆分的日期时间部分
 char dateStr[11];  // "YYYY-MM-DD" 的长度
@@ -46,8 +47,6 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
     message[length] = '\0';  // 确保字符串结尾符
     Serial.println(message);
 
-    inLoop = false;
-    SWITCH_SPI_SS();
     // 根據不同主題進行處理
     if (strcmp(topic, "screen/in") == 0) {
         Serial.println(F("顯示車牌號碼"));  // 有變數
@@ -62,9 +61,9 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
         displayImageAndText(NULL, NULL, NULL, NULL, out);  // 只显示图片
     } else if (strcmp(topic, "screen/reservation") == 0) {
         Serial.println(F("已預約")); // 無變數
-        strncpy(plate, message, sizeof(plate) - 1);  // 复制内容，避免溢出
-        plate[sizeof(plate) - 1] = '\0';  // 确保字符串以 null 结尾
-        displayImageAndText(message, NULL, NULL, NULL, reservation);  // 显示预约的文字和图片
+        strncpy(re_plate, message, sizeof(re_plate) - 1);  // 复制内容，避免溢出
+        plate[sizeof(re_plate) - 1] = '\0';  // 确保字符串以 null 结尾
+        displayImageAndText(re_plate, NULL, NULL, NULL, reservation);  // 显示预约的文字和图片
     } else if (strcmp(topic, "screen/check") == 0) {
         Serial.println(F("顯示停車資訊")); // 有變數
         extractDateTime(message);
@@ -75,16 +74,20 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
         pay[sizeof(pay) - 1] = '\0';  // 确保字符串以 null 结尾
         displayImageAndText(plate, NULL, NULL, pay, checkout, 90, 10);  // 显示支付信息和图片
         // mfrc 522的東西
-        inLoop = true;
+        inRFID = true;
     } else if (strcmp(topic, "screen/remain") == 0) {
         Serial.println(F("顯示還剩多少錢")); // 有變數
         displayImageAndText(pay, NULL, message, NULL, remain, 150, 60);  // 显示剩余金额和车牌信息
     } else if (strcmp(topic, "screen/out") == 0) {
         Serial.println(F("顯示停車資訊")); // 無變數
-        strncpy(plate, "", sizeof(plate) - 1);
-        strncpy(uid, "", sizeof(uid) - 1);
-        strncpy(pay, "", sizeof(pay) - 1);
+        memset(plate, 0, sizeof(plate));  // 清空 plate
+        memset(re_plate, 0, sizeof(re_plate));  // 清空 re_plate
+        memset(uid, 0, sizeof(uid));  // 清空 uid
+        memset(pay, 0, sizeof(pay));  // 清空 pay
         displayImageAndText(NULL, NULL, NULL, NULL, out);  // 只显示图片，不显示文本
+    }else if (strcmp(topic, "screen/clear") == 0) {
+        Serial.println(F("清除為全白畫面")); // 無變數
+        EPD_2IN66g_Clear(EPD_2IN66g_WHITE);  // 清除屏幕
     }
     else {
         return;
@@ -171,7 +174,7 @@ void displayImageAndText(const char* text1, const char* text2, const char* text3
     // EPD_2IN66g_Sleep();
     free(BlackImage);
     BlackImage = NULL;
-    // // DEV_delay_ms(2000);
+    // DEV_delay_ms(2000);
     // while(myDelay(2000) == false); // 至少等待2秒
     // Serial.print(F("close 5V, Module enters 0 power consumption ...\r\n"));
     // DEV_Module_Exit();
