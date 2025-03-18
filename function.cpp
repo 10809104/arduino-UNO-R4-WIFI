@@ -47,6 +47,7 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
     Serial.println(message);
 
     inLoop = false;
+    SWITCH_SPI_SS();
     // 根據不同主題進行處理
     if (strcmp(topic, "screen/in") == 0) {
         Serial.println(F("顯示車牌號碼"));  // 有變數
@@ -56,6 +57,9 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
     } else if (strcmp(topic, "screen/invalid") == 0) {
         Serial.println(F("是無效操作")); // 無變數
         displayImageAndText(NULL, NULL, NULL, NULL, invalid);  // 显示无效操作的文字和图片
+        if (!client.connected()) DEV_Delay_ms(2000);
+        else while(myDelay(2000) == false);
+        displayImageAndText(NULL, NULL, NULL, NULL, out);  // 只显示图片
     } else if (strcmp(topic, "screen/reservation") == 0) {
         Serial.println(F("已預約")); // 無變數
         strncpy(plate, message, sizeof(plate) - 1);  // 复制内容，避免溢出
@@ -104,6 +108,8 @@ bool myDelay(unsigned long delayTime) {
 void displayImageAndText(const char* text1, const char* text2, const char* text3, const char* text4, const uint8_t* image, int xPos, int yPos) {
     // DEV_Module_In();
     // EPD_2IN66g_Init();
+
+    SWITCH_SPI_SS();
     
     // 计算并申请内存
     UBYTE *BlackImage;
