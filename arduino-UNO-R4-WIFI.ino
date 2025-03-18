@@ -1,4 +1,5 @@
-/* 矩陣燈會顯示是否連上WIFI或是MQTT
+/* 
+ * 矩陣燈會顯示是否連上WIFI或是MQTT
  * 目的接收MQTT的訊息顯示對應的東西
  *  默認起始畫面 接收screen/out
  *  無效操作 接收screen/invalid
