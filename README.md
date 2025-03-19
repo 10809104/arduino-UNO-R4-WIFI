@@ -105,6 +105,9 @@
 
 可在 **Arduino IDE → 庫管理員** 安裝這些庫。
 
+📌 **官方電子紙 Wiki & 驅動程式**：  
+🔗 [Waveshare 2.66 吋電子紙模組 (G) 官方文件](https://www.waveshare.com/wiki/2.66inch_e-Paper_Module_(G)_Manual#Working_With_Arduino)
+
 ---
 
 ## ❓ 常見問題
