@@ -42,6 +42,9 @@ extern char plate[8];
 extern char re_plate[8];
 extern char uid[9];
 extern char pay[4];
+
+extern unsigned long preMillis;
+
 extern MFRC522 mfrc522;  // Create MFRC522 instance.
 
 bool inRFID = false;     // 是否进入等待rfid
@@ -139,20 +142,32 @@ void loop() {
         } else if (plate[0] != '\0') {
             Serial.println(F("有車進來了，卻未按結帳就刷卡"));
             displayImageAndText(NULL, NULL, NULL, NULL, invalid);
-            if (!client.connected()) DEV_Delay_ms(2000);
-            else while(myDelay(2000) == false);
+            if (!client.connected()){
+              DEV_Delay_ms(2000);
+            } else{
+              preMillis = millis();
+              while(myDelay(2000) == false);
+            }
             displayImageAndText(plate, NULL, NULL, NULL, in);  // 只显示图片
         } else if (re_plate[0] != '\0') {
             Serial.println(F("有預約車子，卻未按結帳就刷卡"));
             displayImageAndText(NULL, NULL, NULL, NULL, invalid);  // 显示无效操作的文字和图片
-            if (!client.connected()) DEV_Delay_ms(2000);
-            else while(myDelay(2000) == false);
+            if (!client.connected()){
+              DEV_Delay_ms(2000);
+            } else{
+              preMillis = millis();
+              while(myDelay(2000) == false);
+            }
             displayImageAndText(re_plate, NULL, NULL, NULL, reservation);  // 只显示图片
         } else {
             Serial.println(F("手濺亂刷卡")); // 無變數
             displayImageAndText(NULL, NULL, NULL, NULL, invalid);  // 显示无效操作的文字和图片
-            if (!client.connected()) DEV_Delay_ms(2000);
-            else while(myDelay(2000) == false);
+            if (!client.connected()){
+              DEV_Delay_ms(2000);
+            } else{
+              preMillis = millis();
+              while(myDelay(2000) == false);
+            }
             displayImageAndText(NULL, NULL, NULL, NULL, out);  // 只显示图片
         }
     }

@@ -2,9 +2,9 @@
 #include "function.h"
 
 char uid[9]; // rfid卡片的uid
-char plate[8]; // 用来保存車牌
-char re_plate[8]; // 用来保存預約車牌
-char pay[4]; // 用来保存繳費金額
+char plate[8]; // 用来保存收到的消息
+char re_plate[8]; // 用来保存收到的消息
+char pay[4]; // 用来保存收到的消息
 
 // 创建临时的 char 数组来存储拆分的日期时间部分
 char dateStr[11];  // "YYYY-MM-DD" 的长度
@@ -56,8 +56,12 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
     } else if (strcmp(topic, "screen/invalid") == 0) {
         Serial.println(F("是無效操作")); // 無變數
         displayImageAndText(NULL, NULL, NULL, NULL, invalid);  // 显示无效操作的文字和图片
-        if (!client.connected()) DEV_Delay_ms(2000);
-        else while(myDelay(2000) == false);
+        if (!client.connected()){
+          DEV_Delay_ms(2000);
+        } else{
+          preMillis = millis();
+          while(myDelay(2000) == false);
+        }
         displayImageAndText(NULL, NULL, NULL, NULL, out);  // 只显示图片
     } else if (strcmp(topic, "screen/reservation") == 0) {
         Serial.println(F("已預約")); // 無變數
@@ -67,7 +71,7 @@ void callback(char* topic, uint8_t* payload, unsigned int length) {
     } else if (strcmp(topic, "screen/check") == 0) {
         Serial.println(F("顯示停車資訊")); // 有變數
         extractDateTime(message);
-        displayImageAndText(plate, dateStr, timeStr, numberStr, check, 90,10);  // 显示停车信息（车牌号和图片）
+        displayImageAndText(plate, dateStr, timeStr, numberStr, check_2, 90,10);  // 显示停车信息（车牌号和图片）
     } else if (strcmp(topic, "screen/checkout") == 0) {
         Serial.println(F("請逼卡")); // 有變數
         strncpy(pay, message, sizeof(pay) - 1);  // 复制内容，避免溢出
@@ -174,7 +178,7 @@ void displayImageAndText(const char* text1, const char* text2, const char* text3
     // EPD_2IN66g_Sleep();
     free(BlackImage);
     BlackImage = NULL;
-    // DEV_delay_ms(2000);
+    // // DEV_delay_ms(2000);
     // while(myDelay(2000) == false); // 至少等待2秒
     // Serial.print(F("close 5V, Module enters 0 power consumption ...\r\n"));
     // DEV_Module_Exit();
