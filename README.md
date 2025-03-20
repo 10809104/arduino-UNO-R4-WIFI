@@ -137,7 +137,8 @@
 
 ## 📜 授權條款
 
-本專案採用 [LICENSE NAME] 許可證，詳情請參閱 `LICENSE` 文件。
+本專案使用 **Kik_Koh License v1.0**，未經授權禁止用於競賽與商業用途。
+詳細授權條款請見 LICENSE 文件。
 
 ---
 <footer>
