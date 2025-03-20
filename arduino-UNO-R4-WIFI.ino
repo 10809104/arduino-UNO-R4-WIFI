@@ -1,3 +1,8 @@
+/*
+ * This software is licensed under the Kik_Koh License v1.0
+ * Unauthorized use in competitions or commercial applications is strictly prohibited.
+ * See LICENSE for details.
+ */
 /* 
  * 矩陣燈會顯示是否連上WIFI或是MQTT
  * 目的接收MQTT的訊息顯示對應的東西

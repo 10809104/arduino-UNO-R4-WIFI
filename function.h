@@ -1,3 +1,8 @@
+/*
+ * This software is licensed under the Kik_Koh License v1.0
+ * Unauthorized use in competitions or commercial applications is strictly prohibited.
+ * See LICENSE for details.
+ */
 #include <stdint.h>
 #include <PubSubClient.h>
 #include "src/Examples/EPD_Test.h"
