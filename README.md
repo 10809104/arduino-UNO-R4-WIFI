@@ -1,6 +1,6 @@
 # Arduino UNO R4 WIFI 使用RFID、電子紙、矩陣燈 與 MQTT收發訊息 範例
 
-本專案整合 **RFID 讀卡機** 、 **電子紙顯示器** 與 **內建矩陣燈**，使用 **Arduino UNO R4 WiFi** 來實現 **WiFi 連線**、**MQTT 通訊**，並根據不同的 MQTT 訊息動態更新顯示內容。
+本專案整合 **RFID 讀卡機** 、 **電子墨水屏** 與 **內建矩陣燈**，使用 **Arduino UNO R4 WiFi** 來實現 **WiFi 連線**、**MQTT 通訊**，並根據不同的 MQTT 訊息動態更新顯示內容。
 
 ---
 
@@ -23,7 +23,7 @@
   - 根據不同主題 (`screen/in`, `screen/checkout` 等) 顯示對應的內容。
 - **RFID 讀卡驗證**：
   - **只有在收到 `checkout` 訊息後，刷 RFID 卡才會生效**，否則顯示「無效操作」。
-- **電子紙顯示**：
+- **電子墨水屏顯示**：
   - 顯示車牌號碼、時間、金額等資訊。
 
 ---
@@ -33,11 +33,11 @@
 ### 硬體需求
 - **Arduino UNO R4 WiFi**（或相容開發板）
 - **MFRC522 RFID 模組**
-- **2.66 吋電子墨水屏模組 (G)**
+- **Waveshare 2.66 吋電子墨水屏模組 (G)**
 - **杜邦線與電源供應**
 
-### 電子紙顯示器與 Arduino UNO
-| 電子紙 | Arduino UNO |
+### 電子墨水屏與 Arduino UNO
+| 電子墨水屏 | Arduino UNO |
 |--------|------------|
 | VCC    | 5V         |
 | GND    | GND        |
@@ -73,7 +73,7 @@
 可在 **Arduino IDE → 庫管理員** 安裝這些庫。
 
 **官方電子紙 Wiki & 驅動程式**：  
-[Waveshare 2.66 吋電子紙模組 (G) 官方文件](https://www.waveshare.com/wiki/2.66inch_e-Paper_Module_(G)_Manual#Working_With_Arduino)
+[Waveshare 2.66 吋電子墨水屏模組 (G) 官方文件](https://www.waveshare.com/wiki/2.66inch_e-Paper_Module_(G)_Manual#Working_With_Arduino)
 
 ---
 
