@@ -99,7 +99,7 @@
    - `screen/in`：顯示車牌號碼。(ex:ABC1234)
    - `screen/invalid`：顯示「無效操作」。
    - `screen/reservation`：顯示預約資訊。(ex:ABC1234)
-   - `screen/check`：顯示停車資訊（車牌、時間等）。(ex:2025-01-01 00:00:00 30)
+   - `screen/check`：顯示停車資訊（車牌、時間等）。(ex:ABC1234 2025-01-01 00:00:00 30)
    - `screen/checkout`：請求付款。(ex:30)
    - `screen/remain`：顯示剩餘金額。(ex:770)
    - `screen/out`：還原為初始畫面。
