@@ -195,17 +195,23 @@ void displayImageAndText(const char* text1, const char* text2, const char* text3
     // DEV_Module_Exit();
 }
 
+void extractDateTime(const char* message) { 
+    // 查找车牌号结束的位置，假设车牌号后有一个空格
+    const char* plateEnd = strchr(message, ' ');
+    if (plateEnd == NULL) {
+        Serial.println(F("No space found after plate number"));
+        return;  // 如果没有找到空格，返回
+    }
 
-void extractDateTime(const char* message) {
-    // 查找日期部分的起始位置
-    const char* dateStart = strstr(message, "20");  // 假设日期是以 "20" 开头的
+    // 查找日期部分的起始位置，假设日期是以 "20" 开头的
+    const char* dateStart = strstr(plateEnd, "20");
     if (dateStart == NULL) {
         Serial.println(F("No date found"));
         return;  // 如果没有找到日期，返回
     }
 
-    // 查找日期部分的结束位置
-    const char* dateEnd = strchr(dateStart, ' ');  // 日期后会有一个空格
+    // 查找日期部分的结束位置（日期后会有一个空格）
+    const char* dateEnd = strchr(dateStart, ' ');  
     if (dateEnd == NULL) {
         Serial.println(F("No space found for date"));
         return;  // 如果没有找到空格，返回

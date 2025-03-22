@@ -3,15 +3,14 @@
  * Unauthorized use in competitions or commercial applications is strictly prohibited.
  * See LICENSE for details.
  */
-/* 
- * 矩陣燈會顯示是否連上WIFI或是MQTT
+/*
  * 目的接收MQTT的訊息顯示對應的東西
  *  默認起始畫面 接收screen/out
  *  無效操作 接收screen/invalid
  *  被預約 接收screen/reservation
  *  有車進來了 接收screen/in
  *  查詢停車資訊 接收screen/check
- *  應繳費金額 下一步 接收screen/checkout
+ *  應繳費金額 下一步 接收screen/checkout2
  *  繳費完成資訊 接收screen/remain
  *  清理螢幕 接收screen/clear
  * 可以使用rfid
@@ -80,13 +79,13 @@ void reconnect_mqtt() {
     matrix.play(true);
     while (!client.connected()) {
         Serial.print(F("🔗 連接 MQTT..."));
-        if (client.connect("ArduinoUNO", mqtt_user, mqtt_password)) {
+        if (client.connect("ArduinoTaipei101", mqtt_user, mqtt_password)) {
             Serial.println(F(" ✅ 連接成功！"));
             
             // 📌 訂閱主題
-            client.subscribe(sub_topic);
+            client.subscribe(sub_topic, 1);
             
-            Serial.print(F("📡 已訂閱有關screen/的topic "));
+            Serial.print(F("📡 已訂閱多個topic "));
             Serial.println(sub_topic);
         } else {
             Serial.print(F(" ❌ 連線失敗，錯誤代碼: "));
@@ -101,7 +100,7 @@ void setup() {
     DEV_Module_Init();
 
     matrix.begin();
-    matrix.loadSequence(LEDMATRIX_ANIMATION_WIFI_SEARCH); // show search wifi
+    matrix.loadSequence(LEDMATRIX_ANIMATION_WIFI_SEARCH);
     matrix.play(true);
     
     // 📡 連接 WiFi
@@ -113,13 +112,14 @@ void setup() {
     
     // 設定 MQTT 伺服器 & 訂閱回呼函數
     client.setServer(mqtt_server, mqtt_port);
+    client.setKeepAlive(60);  // 設置 keepAlive 為 60 秒
     client.setCallback(callback);
     
     reconnect_mqtt();
 
     matrix.clear(); // Clear the matrix when connected
 
-    // 顯示初始圖示
+    // 顯示歐美圖示
     Serial.print(F("e-Paper Init...\r\n"));
     EPD_2IN66g_Init();
 
@@ -133,8 +133,6 @@ void loop() {
     }
     matrix.clear(); // Clear the matrix when connected
     client.loop();
-
-    // 如果有刷卡
     SWITCH_SPI_CS();
     if (readRFID() == true) {
         if (inRFID == true) {
