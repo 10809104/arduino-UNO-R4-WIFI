@@ -9,12 +9,12 @@
 char uid[9]; // rfid卡片的uid
 char plate[8]; // 用来保存收到的消息
 char re_plate[8]; // 用来保存收到的消息
-char pay[4]; // 用来保存收到的消息
+char pay[5]; // 用来保存收到的消息
 
 // 创建临时的 char 数组来存储拆分的日期时间部分
 char dateStr[11];  // "YYYY-MM-DD" 的长度
 char timeStr[9];   // "HH:MM:SS" 的长度
-char numberStr[4]; // 假设数字部分最大是两位数
+char numberStr[5]; // 假设数字部分最大是3位数
 
 unsigned long preMillis = 0;  // 上次执行时间
 
