@@ -45,7 +45,7 @@ const char pub_topic[] = "screen/rfid";
 extern char plate[8];
 extern char re_plate[8];
 extern char uid[9];
-extern char pay[4];
+extern char pay[5];
 
 extern unsigned long preMillis;
 
